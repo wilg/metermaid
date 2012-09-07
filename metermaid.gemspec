@@ -2,6 +2,7 @@
 require File.expand_path('../lib/metermaid/version', __FILE__)
 
 Gem::Specification.new do |gem|
+
   gem.authors       = ["Wil Gieseler"]
   gem.email         = ["supapuerco@gmail.com"]
   gem.description   = "Gently pilfers your power usage data from your power company."
@@ -14,4 +15,8 @@ Gem::Specification.new do |gem|
   gem.name          = "metermaid"
   gem.require_paths = ["lib"]
   gem.version       = Metermaid::VERSION
+
+  gem.add_dependency 'mechanize'
+  gem.add_dependency 'rubyzip'
+
 end

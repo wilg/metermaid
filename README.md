@@ -24,6 +24,9 @@ Or install it yourself as:
 
 TODO: Write usage instructions here
 
+    Metermaid::Opower::Scraper.scrape!({subdomain: 'gwp', username: 'email', password: 'pass'})
+
+
 ## Contributing
 
 1. Fork it
