@@ -1,10 +1,12 @@
-# Metermaid
+#Metermaid [![Build Status](https://secure.travis-ci.org/wilg/metermaid.png?branch=master)](http://travis-ci.org/wilg/metermaid) [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/wilg/metermaid)
 
 Gently pilfers your power usage data from your power company.
 
-Currently just supports Opower.
-
 **Doesn't actually work yet!!**
+
+<!---
+
+Currently just supports Opower.
 
 ## Installation
 
@@ -34,3 +36,4 @@ TODO: Write usage instructions here
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+--->
