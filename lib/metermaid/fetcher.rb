@@ -40,17 +40,27 @@ module Metermaid
 				samples = []
 				hashes.each do |item|
 					if item[:type] == "Electric usage"
+
 						sample = Sample.new
-						sample.start_time = DateTime.parse "#{item[:date]} #{item[:start_time]}"
+
+						# Start Time
+						start_time = DateTime.parse "#{item[:date]} #{item[:start_time]}#{DateTime.now.zone}"
+						sample.start_time = start_time
+
+						# End Time
 						end_time = DateTime.parse "#{item[:date]} #{item[:end_time]}"
 						duration = (end_time.to_time - sample.start_time.to_time).to_i
-						sample.duration = duration == 3540 ? 3600 : duration # Opower incorrectly says that the period is 59 minutes when they actually mean 60 
+						sample.duration = duration == 3540 ? 3600 : duration # Opower incorrectly says that the period is 59 minutes when they actually mean 60
+
+						# Units
 						if item[:units] == "kWh"
 							sample.kwh = item[:usage].to_f
 						else
 							raise "Using unsupported unit: #{item[:units]}"
 						end
+
 						samples << sample
+
 					else
 						raise "Using unsupported type: #{item[:type]}"
 					end

@@ -7,6 +7,10 @@ module Metermaid
   class Sample
     attr_accessor :start_time, :duration, :kwh
 
+    def end_time
+      start_time + duration.seconds
+    end
+
     # Creates a new Sample.
     #
     # @param [Time] time the start of the sample period.

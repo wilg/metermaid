@@ -11,6 +11,23 @@ module Metermaid
 
     def initialize(samples_array)
       self.samples = samples_array
+      sort_by_date!
+    end
+
+    def sort_by_date!
+      samples = self.samples.sort {|a,b| a.start_time.to_i <=> b.start_time.to_i }
+    end
+
+    def start_time
+      samples.first.start_time
+    end
+
+    def end_time
+      samples.last.end_time
+    end
+
+    def time_range
+      [start_time..end_time]
     end
 
   #   # Calculates the total number of kilowatt hours for all samples.
