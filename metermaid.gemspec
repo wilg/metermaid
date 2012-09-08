@@ -18,5 +18,9 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency 'mechanize'
   gem.add_dependency 'rubyzip'
+  gem.add_dependency 'thor'
+  gem.add_dependency 'activesupport'
+
+  gem.add_development_dependency 'rspec'
 
 end
