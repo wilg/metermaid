@@ -4,3 +4,4 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'coveralls', :require => false
+gem "greenbutton", git: "git@github.com:wilg/greenbutton-ruby.git"
