@@ -1,6 +1,6 @@
 class CreateDatabase < ActiveRecord::Migration
   def change
-    create_table :metermaid_samples do |t|
+    create_table :samples do |t|
       t.integer :time_period_duration
       t.integer :time_period_start
       t.integer :value
