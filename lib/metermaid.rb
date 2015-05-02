@@ -1,5 +1,6 @@
 # Dependencies
 require 'active_support/all'
+require 'sparsify'
 
 require "metermaid/version"
 require "metermaid/sample_collection"

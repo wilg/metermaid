@@ -20,7 +20,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'rubyzip', ">= 1.0"
   gem.add_dependency 'thor'
   gem.add_dependency 'activesupport'
-  gem.add_dependency 'greenbutton', ">= 0.0.2"
+  gem.add_dependency 'sparsify'
 
   gem.add_development_dependency 'rspec'
   gem.add_development_dependency 'rake'

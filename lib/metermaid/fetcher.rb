@@ -22,18 +22,41 @@ module Metermaid
         export_page = agent.get(export_form_url)
         export_url_base = export_page.forms.first.action
         file = agent.get("#{export_url_base}?exportFormat=ESPI_AMI&bill=&xmlFrom=04%2F18%2F2015&xmlTo=04%2F29%2F2015")
-        decompress(file)
+        files_to_rows(decompress(file), options[:additional_metadata] || {})
       end
 
       def self.decompress(file)
         tempfile = Tempfile.new(['opower', 'zip'])
         files = {}
-        Zip::File.open(file.save(tempfile)) do |zip_file|
+        Zip::File.open(file.save(tempfile.path)) do |zip_file|
           zip_file.each do |entry|
             files[entry.name] = entry.get_input_stream.read
           end
         end
         files
+      end
+
+      def self.files_to_rows(file_hash, additional_metadata = {})
+        rows = []
+        file_hash.each do |k, v|
+          rows.concat to_rows(v, additional_metadata.merge(filename: k))
+        end
+        rows
+      end
+
+      def self.to_rows(xml, additional_metadata = {})
+        entries = Hash.from_xml(xml)["feed"]["entry"]
+        usage_data = entries.find{|e| e["content"]["IntervalBlock"] rescue nil}["content"]["IntervalBlock"]
+        reading_type = entries.find{|e| e["content"]["ReadingType"] rescue nil}["content"]["ReadingType"]
+        usage_point = entries.find{|e| e["content"]["UsagePoint"] rescue nil}
+
+        data = usage_data["IntervalReading"].map do |entry|
+          entry = entry
+            .merge({reading_type: reading_type})
+            .merge({address: usage_point["title"], usage_point: usage_point["content"]["UsagePoint"]})
+            .merge(additional_metadata)
+          Hash[Sparsify(entry, separator: "-").map{|k, v| [k.underscore, v]}.reject{|v| v[0].include?("xmlns")}]
+        end
       end
 
       def self.parse(text)
