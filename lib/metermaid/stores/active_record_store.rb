@@ -4,6 +4,8 @@ module Metermaid
 
   module DB
     class MetermaidSample < ActiveRecord::Base
+      set_table_name 'metermaid.samples'
+
       validates :sample_hash, uniqueness: true
     end
   end
