@@ -25,7 +25,13 @@ module Metermaid
 
     def migrate!
       ActiveRecord::Migration.verbose = true
-      ActiveRecord::Migrator.migrate "db/migrate"
+      ActiveRecord::Migrator.migrate(File.join(
+        File.dirname(__FILE__),
+        "..",
+        "..",
+        "..",
+        "db/migrate"
+      ))
     end
 
     def close!
