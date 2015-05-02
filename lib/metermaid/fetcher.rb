@@ -7,7 +7,7 @@ module Metermaid
       require 'tempfile'
       require 'csv'
 
-      def self.scrape!(username:, password:, additional_metadata: {})
+      def self.scrape!(username:, password:, start_date:, end_date:, additional_metadata: {})
         base_url = "http://www.pge.com/"
         agent = Mechanize.new
         page = agent.get(base_url)
@@ -21,7 +21,7 @@ module Metermaid
         export_form_url = page.link_with(text: "Green Button - Download my data").href
         export_page = agent.get(export_form_url)
         export_url_base = export_page.forms.first.action
-        file = agent.get("#{export_url_base}?exportFormat=ESPI_AMI&bill=&xmlFrom=04%2F18%2F2015&xmlTo=04%2F29%2F2015")
+        file = agent.get("#{export_url_base}?exportFormat=ESPI_AMI&bill=&xmlFrom=#{CGI.escape(start_date.strftime("%m-%d-%Y"))}&xmlTo=#{CGI.escape(end_date.strftime("%m-%d-%Y"))}")
         files_to_rows(decompress(file), additional_metadata)
       end
 
@@ -55,7 +55,9 @@ module Metermaid
             .merge({reading_type: reading_type})
             .merge({address: usage_point["title"], usage_point: usage_point["content"]["UsagePoint"]})
             .merge(additional_metadata)
-          Hash[Sparsify(entry, separator: "-").map{|k, v| [k.underscore, v]}.reject{|v| v[0].include?("xmlns")}]
+          entry = Hash[Sparsify(entry, separator: "-").map{|k, v| [k.underscore.to_sym, v]}.reject{|v| v[0].to_s.include?("xmlns")}]
+          entry[:sample_hash] = entry.except(:value, :filename).sort.join("_")
+          entry
         end
       end
 
