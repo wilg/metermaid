@@ -54,8 +54,10 @@ module Metermaid
           entry = entry
             .merge({reading_type: reading_type})
             .merge({address: usage_point["title"], usage_point: usage_point["content"]["UsagePoint"]})
-            .merge(additional_metadata)
+            .merge({filename: additional_metadata[:filename]})
           entry = Hash[Sparsify(entry, separator: "-").map{|k, v| [k.underscore.to_sym, v]}.reject{|v| v[0].to_s.include?("xmlns")}]
+          additional_metadata.delete(:filename)
+          entry[:additional_metadata] = additional_metadata.as_json
           entry[:sample_hash] = entry.except(:value, :filename).sort.join("_")
           entry
         end

@@ -10,6 +10,16 @@ module Metermaid
 
   class ActiveRecordStore < Store
 
+    def migration_path
+      File.join(
+        File.dirname(__FILE__),
+        "..",
+        "..",
+        "..",
+        "db/migrate"
+      )
+    end
+
     def open!
       ActiveRecord::Base.table_name_prefix = 'metermaid_'
       ActiveRecord::Base.logger = Logger.new(STDERR)
@@ -25,13 +35,12 @@ module Metermaid
 
     def migrate!
       ActiveRecord::Migration.verbose = true
-      ActiveRecord::Migrator.migrate(File.join(
-        File.dirname(__FILE__),
-        "..",
-        "..",
-        "..",
-        "db/migrate"
-      ))
+      ActiveRecord::Migrator.migrate(migration_path)
+    end
+
+    def reset!
+      ActiveRecord::Migration.verbose = true
+      ActiveRecord::Migrator.migrate(migration_path, 0)
     end
 
     def close!
