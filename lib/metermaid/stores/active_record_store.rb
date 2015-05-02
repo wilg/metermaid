@@ -13,6 +13,7 @@ module Metermaid
   class ActiveRecordStore < Store
 
     def open!
+      ActiveRecord::Base.table_name_prefix = 'metermaid_'
       ActiveRecord::Base.logger = Logger.new(STDERR)
       conn = ENV["DATABASE_URL"] || {
         adapter: "postgresql",
