@@ -3,7 +3,7 @@ require 'active_record'
 module Metermaid
 
   module DB
-    class MetermaidSample < ActiveRecord::Base
+    class Sample < ActiveRecord::Base
       validates :sample_hash, uniqueness: true
     end
   end
